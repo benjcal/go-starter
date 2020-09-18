@@ -32,6 +32,7 @@ func mountAuthRoutes(r chi.Router, a app.App) {
 			return
 		}
 
+		w.Header().Add("Content-Type", "application/json")
 		w.Write([]byte(res))
 	})
 
@@ -61,6 +62,7 @@ func mountFunctionRoute(r chi.Router, a app.App) {
 	r.Group(func(r chi.Router) {
 		r.Use(jwtauth.Verifier(jwtAuth))
 		r.Use(jwtauth.Authenticator)
+
 	})
 }
 
