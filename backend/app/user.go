@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/benjcal/go-starter/pkg/auth"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/jwtauth"
@@ -24,6 +25,11 @@ func (a App) UserLogin(email, pwd string) (map[string]interface{}, error) {
 	err := a.db.Raw("SELECT * FROM api.valid_user(?,?)", email, pwd).Scan(&v).Error
 	if err != nil && !strings.Contains(err.Error(), schema.ErrUnsupportedDataType.Error()) {
 		return nil, err
+	}
+
+	_, ok := v["id"]
+	if !ok {
+		return nil, fmt.Errorf("no user found")
 	}
 
 	jwtAuth := auth.GetJWTAuth(a.Config)

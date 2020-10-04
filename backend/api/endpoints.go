@@ -32,6 +32,7 @@ func mountAuthRoutes(r chi.Router, a app.App) {
 			return
 		}
 
+		w.WriteHeader(http.StatusOK)
 		w.Header().Add("Content-Type", "application/json")
 		w.Write([]byte(res))
 	})
